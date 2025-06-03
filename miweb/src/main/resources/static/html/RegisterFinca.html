@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crear Finca</title>
+  <link rel="stylesheet" href="/miweb/src/main/resources/static/css/registerFincaStyled.css" />
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h2>MENÚ</h2>
+      <nav>
+        <a href="/miweb/src/main/resources/static/html/Home.html">🏡 Inicio</a>
+        <a href="/miweb/src/main/resources/static/html/ReportFinca.html">📄 Reporte</a>
+      </nav>
+    </aside>
+
+    <div class="main-content">
+        <h1>Crear Finca</h1>
+        <div class="form-box">
+          <form class="form" action="../../Controllers/createFincaController.php" method="POST">
+            <input type="text" name="nombre" placeholder="Nombre">
+            <input type="number" name="numHectaras" placeholder="Número de Hectáreas">
+            <input type="number" name="metrosCuadrados" placeholder="Metros Cuadrados">
+            <input type="text" name="codigo_propietario" placeholder="Codigo del Propietario">
+            <input type="text" name="codigo_capataz" placeholder="Codigo del Capataz">
+            <input type="text" name="codigo_vendedor" placeholder="Codigo del Vendedor">
+            <input type="text" name="pais" placeholder="País">
+            <input type="text" name="departamento" placeholder="Departamento">
+            <input type="text" name="ciudad" placeholder="Ciudad">
+      
+            <select name="siProduceLeche">
+              <option value="">¿Produce Leche?</option>
+              <option value="1">Sí</option>
+              <option value="0">No</option>
+            </select>
+            <select name="siProduceCereales">
+              <option value="">¿Produce Cereales?</option>
+              <option value="1">Sí</option>
+              <option value="0">No</option>
+            </select>
+            <select name="siProduceFrutas">
+              <option value="">¿Produce Frutas?</option>
+              <option value="1">Sí</option>
+              <option value="0">No</option>
+            </select>
+            <select name="siProduceVerduras">
+              <option value="">¿Produce Verduras?</option>
+              <option value="1">Sí</option>
+              <option value="0">No</option>
+            </select>
+      
+            <button type="submit">Guardar Finca</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="right-shape"></div>
+
+  </div>
+</body>
+
+<script>
+const urlPara = new URLSearchParams(window.location.search);
+
+if (urlPara.has('error')) {
+  const error = urlPara.get('error');
+  if (error === 'empty_fields') {
+    alert('Hay campos vacíos.');
+  } else if (error === 'error_crear_finca') {
+    alert('Hubo un error al crear la finca. Por favor, inténtalo de nuevo.');
+  }
+}
+
+if (urlPara.has('success')) {
+  alert('Finca registrada exitosamente.');
+}
+</script>
+
+
+<!-- PRUEBA PARA LISTA DINAMICA DE PROPIETARIOS
+<script>
+    function cargarPropietarios() {
+      const datalist = document.getElementById("propietarios-list");
+      datalist.innerHTML = "";
+  
+      propietarios.forEach(propietario => {
+        const option = document.createElement("option");
+        option.value = `${propietario.id} - ${propietario.nombre}`;
+        datalist.appendChild(option);
+      });
+    }
+  
+    function filtrarPropietarios() {
+      const input = document.getElementById("propietario").value.toLowerCase();
+      const datalist = document.getElementById("propietarios-list");
+      datalist.innerHTML = ""; 
+  
+      propietarios
+        .filter(propietario => propietario.nombre.toLowerCase().includes(input))
+        .forEach(propietario => {
+          const option = document.createElement("option");
+          option.value = `${propietario.id} - ${propietario.nombre}`;
+          datalist.appendChild(option);
+        });
+    }
+  
+    document.addEventListener("DOMContentLoaded", cargarPropietarios);
+  </script>
+  -->
+</html>

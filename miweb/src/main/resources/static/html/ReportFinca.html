@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gráfica Fincas</title>
+  <link rel="stylesheet" href="/miweb/src/main/resources/static/css/reportFincaStyled.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h2>MENÚ</h2>
+      <nav>
+        <a href="/miweb/src/main/resources/static/html/Home.html">🏡 Inicio</a>
+      </nav>
+    </aside>
+    <div class="charts-container">
+      <div class="chart-box">
+        <h3>Relación de Fincas Según su Producción</h3>
+        <canvas id="fincaChart"></canvas>
+      </div>
+    
+      <div class="chart-box">
+        <h3>Fincas por Ciudad</h3>
+        <canvas id="ciudadesChart"></canvas>
+      </div>
+    </div>
+  </div>
+  </div>
+</body>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('../../Controllers/reportFincaController.php')
+    .then(response => response.json())
+    .then(data => {
+      const produccionConfig = {
+        type: 'pie',
+        data: {
+          labels: data.produccion.labels,
+          datasets: [{
+            label: 'Producción en Fincas',
+            data: data.produccion.data,
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+            hoverOffset: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: 'Producción en las Fincas'
+            }
+          }
+        }
+      };
+
+      const ciudadesConfig = {
+        type: 'pie',
+        data: {
+          labels: data.ciudades.labels,
+          datasets: [{
+            label: 'Fincas por Ciudad',
+            data: data.ciudades.data,
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+            hoverOffset: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: 'Fincas por Ciudad'
+            }
+          }
+        }
+      };
+
+      const ctxProduccion = document.getElementById('fincaChart').getContext('2d');
+      new Chart(ctxProduccion, produccionConfig);
+
+      const ctxCiudades = document.getElementById('ciudadesChart').getContext('2d');
+      new Chart(ctxCiudades, ciudadesConfig);
+    })
+    .catch(error => {
+      console.error('Error al obtener los datos:', error);
+    });
+});
+</script>
+
+</html>

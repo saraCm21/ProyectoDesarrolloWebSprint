@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cambiar Contraseña</title>
+  <link rel="stylesheet" href="/miweb/src/main/resources/static/css/forgotStyled.css" />
+</head>
+<body>
+
+  <div class="container">
+    <div class="left-shape"></div>
+    <h2>Change Password</h2>
+    <form action="../../Controllers/changePasswordController.php" method="POST">
+        <input type="hidden" name="action" value="changePassword">
+
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" required />
+
+        <label for="codigo">Código de verificación</label>
+        <input type="text" id="codigo" name="code" required />
+
+        <label for="nueva">New Password</label>
+        <input type="password" id="password" name="password" required />
+
+        <label for="verificacion">Check Password</label>
+        <input type="password" id="verificacion" name="verificacion" required />
+
+        <button type="submit">Accept</button>
+    </form>
+    <div class="right-shape"></div>
+  </div>
+
+</body>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if (urlParams.has('error')) {
+      const error = urlParams.get('error');
+      if (error === 'email_not_found') {
+        alert('El correo electrónico no se encontró. Por favor, verifica e inténtalo de nuevo.');
+      } else if (error === 'invalid_code') {
+        alert('El código de recuperación es inválido.');
+      } else if (error === 'missing_fields') {
+        alert('Por favor, completa todos los campos.');
+      } else if (error === 'password_mismatch') {
+        alert('Las contraseñas no coinciden. Por favor, inténtalo de nuevo.');
+      }
+    }
+</script>
+
+<script>
+    const passwordInput = document.getElementById('password');
+    const verificationInput = document.getElementById('verificacion');
+    const acceptButton = document.querySelector('button[type="submit"]');
+  
+    acceptButton.disabled = true;
+  
+    function validatePasswords() {
+      if (passwordInput.value === verificationInput.value && passwordInput.value !== '') {
+        acceptButton.disabled = false;
+      } else {
+        acceptButton.disabled = true;
+      }
+    }
+  
+    passwordInput.addEventListener('input', validatePasswords);
+    verificationInput.addEventListener('input', validatePasswords);
+  </script>
+
+</html>

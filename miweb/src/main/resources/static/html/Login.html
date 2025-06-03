@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login Page</title>
+  <link rel="stylesheet" href="/miweb/src/main/resources/static/css/loginStyled.css" />
+</head>
+<body>
+    <div class="left-shape"></div>
+  <div class="container">
+    <div class="login-box">
+      <h2>login</h2>
+      <form action="../../Controllers/loginController.php" method="POST">
+        <input type="text" name="username" placeholder="Username" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <a href="#" class="forgot" id="forgot-password">Forgot your password?</a>
+        <button type="submit">Login</button>
+        <button type="button" class="signup" onclick="window.location.href='/miweb/src/main/resources/static/html/SignUp.html';">SignUp</button>
+      </form>
+    </div>
+    <div class="right-shape"></div>
+  </div>
+
+  <div id="forgot-password-dialog">
+    <h3>Recover Password</h3>
+    <input type="email" id="email-input" placeholder="Enter Email" required style="display: block; margin-bottom: 10px; width: 95%; padding: 5px; border: 1px solid #ccccccec;"/>
+    <button id="submit-email" style="padding: 5px 10px; margin-right: 10px; background-color: #3366ff">Accept</button>
+    <button id="cancel-dialog" style="padding: 5px 10px; background-color: #3366ff">Cancel</button>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('error')) {
+      const error = urlParams.get('error');
+      if (error === 'login_failed') {
+        alert('Credenciales incorrectas. Por favor, inténtalo de nuevo.');
+      }
+    }
+    const url = new URLSearchParams(window.location.search);
+    if (url.has('success')) {
+      alert('Registro exitoso. Ahora puedes iniciar sesión.');
+    }
+  </script>
+
+  <script>
+    document.getElementById('forgot-password').addEventListener('click', function (e) {
+      e.preventDefault();
+  
+      const dialog = document.getElementById('forgot-password-dialog');
+      dialog.style.display = 'block';
+  
+      document.getElementById('submit-email').addEventListener('click', function () {
+        const emailInput = document.getElementById('email-input');
+        const email = emailInput.value.trim();
+  
+        if (!email) {
+          alert('Por favor, ingresa tu correo electrónico.');
+          return;
+        }
+  
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = "/miweb/src/main/resources/static/html/Forgot.html";
+        
+        const actionField = document.createElement('input');
+        actionField.type = 'hidden';
+        actionField.name = 'action';
+        actionField.value = 'sendEmail';
+        form.appendChild(actionField);
+
+        const emailField = document.createElement('input');
+        emailField.type = 'hidden';
+        emailField.name = 'email';
+        emailField.value = email;
+        form.appendChild(emailField);
+  
+        document.body.appendChild(form);
+        form.submit();
+      });
+  
+      document.getElementById('cancel-dialog').addEventListener('click', function () {
+        dialog.style.display = 'none';
+      });
+    });
+  </script>
+
+  <script>
+    const urlPara = new URLSearchParams(window.location.search);
+  
+    if (urlPara.has('error')) {
+      const error = urlPara.get('error');
+      if(error === 'email_not_found') {
+        alert('El correo electrónico no se encontró. Por favor, verifica e inténtalo de nuevo.');
+      } else if (error === 'email_failed') {
+        alert('No se pudo enviar el correo. Por favor, inténtalo de nuevo.');
+      }
+    }
+  </script>
+
+</body>
+</html>
