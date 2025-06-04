@@ -35,9 +35,8 @@ public class Usuario {
     @Column(name = "email", length = 100)
     private String email;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "rol")
-    private Rol rol;
+    private String rol;
 
     @Column(name = "cod_recuperacion")
     private Integer codRecuperacion;
@@ -45,9 +44,5 @@ public class Usuario {
     @Column(name = "time_limit")
     private LocalDateTime timeLimit;
 
-    public enum Rol {
-        vendedor,
-        propietario,
-        capataz
-    }
+
 }

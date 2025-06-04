@@ -1,38 +1,31 @@
 package edu.miuniversidad.miweb.Model.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import edu.miuniversidad.miweb.Model.Entities.Usuario;
 import edu.miuniversidad.miweb.Model.Repositories.UsuarioRepository;
 
 @Service
-public class LoginService {
+public class LoginService implements UserDetailsService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    /**
-     * Verifica las credenciales del usuario.
-     *
-     * @param usuarioOEmail el nombre de usuario
-     * @param password      la contraseña
-     * @return true si las credenciales son válidas, false en caso contrario
-     */
-
-    public boolean login(String usuarioOEmail, String password) {
-        Usuario usuario = usuarioRepository.findByUsername(usuarioOEmail);
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Usuario usuario = usuarioRepository.findByUsername(username);
         if (usuario == null) {
-            usuario = usuarioRepository.findByEmail(usuarioOEmail);
+            throw new UsernameNotFoundException("Usuario no encontrado");
         }
-        if (usuario != null && passwordEncoder.matches(password, usuario.getPassword())) {
-            return true;
-        }
-        return false;
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(usuario.getUsername())
+                .password(usuario.getPassword())
+                .roles("USER") // O usa usuario.getRol() si tienes roles en tu entidad
+                .build();
     }
 
 }

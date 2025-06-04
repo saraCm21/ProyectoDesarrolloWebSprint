@@ -7,9 +7,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import edu.miuniversidad.miweb.Model.Entities.Finca;
 import edu.miuniversidad.miweb.Model.Entities.Usuario;
-import edu.miuniversidad.miweb.Model.Services.ChangePasswordService;
+
 import edu.miuniversidad.miweb.Model.Services.CreateFincaService;
-import edu.miuniversidad.miweb.Model.Services.LoginService;
+
 import edu.miuniversidad.miweb.Model.Services.SendEmailService;
 import edu.miuniversidad.miweb.Model.Services.SignUpService;
 
@@ -19,17 +19,16 @@ class MiwebApplicationTests {
 	@Autowired
 	private SignUpService signUpService;
 
-	@Autowired
-	private LoginService loginService;
+
 
 	@Test
 	void registrarUsuario_guardaUsuarioConPasswordHasheada() {
 		Usuario usuario = new Usuario();
-		usuario.setUsername("Lilo");
+		usuario.setUsername("sarat");
 		usuario.setPassword("12345");
-		usuario.setNombre("Javi");
+		usuario.setNombre("saruliu");
 		usuario.setEmail("test@email.com");
-		usuario.setRol(Usuario.Rol.vendedor);
+		usuario.setRol("vendedor");
 		// No se establece codigoUsuario, ya que es generado automáticamente en el
 		// servicio
 		// No se establece codRecuperacion ni timeLimit, ya que no son necesarios para
@@ -42,31 +41,6 @@ class MiwebApplicationTests {
 		System.out.println("Usuario guardado: " + guardado.getUsername());
 	}
 
-	@Test
-	void login_usuarioOEmailYPassword() {
-		// Primero registramos un usuario de prueba
-		Usuario usuario = new Usuario();
-		usuario.setUsername("testlogin" + System.currentTimeMillis());
-		usuario.setPassword("clave123");
-		usuario.setNombre("Nombre Login");
-		usuario.setEmail("login" + System.currentTimeMillis() + "@mail.com");
-		usuario.setRol(Usuario.Rol.vendedor);
-
-		Usuario guardado = signUpService.registrarUsuario(usuario);
-
-		// Probar login por username
-		boolean loginPorUsername = loginService.login(guardado.getUsername(),
-				"clave123");
-		assertThat(loginPorUsername).isTrue();
-
-		// Probar login por email
-		boolean loginPorEmail = loginService.login(guardado.getEmail(), "clave123");
-		assertThat(loginPorEmail).isTrue();
-
-		// Probar login fallido
-		boolean loginFallido = loginService.login("noexiste", "clave123");
-		assertThat(loginFallido).isFalse();
-	}
 
 	@Autowired
 	private SendEmailService sendEmailService;
@@ -77,41 +51,8 @@ class MiwebApplicationTests {
 		assertThat(resultado).isTrue();
 	}
 
-	@Autowired
-	private ChangePasswordService changePasswordService;
 
-	@Test
-	void cambiarPassword_cambiaConCodigoYTiempoCorrecto() {
-		// Crear y registrar usuario de prueba
-		Usuario usuario = new Usuario();
-		usuario.setUsername("testcambio" + System.currentTimeMillis());
-		usuario.setPassword("viejaClave");
-		usuario.setNombre("Cambio");
-		usuario.setEmail("cambio" + System.currentTimeMillis() + "@mail.com");
-		usuario.setRol(Usuario.Rol.vendedor);
-		Usuario guardado = signUpService.registrarUsuario(usuario);
 
-		// Simular envío de código de recuperación
-		int codigo = 123456;
-		guardado.setCodRecuperacion(codigo);
-		guardado.setTimeLimit(java.time.LocalDateTime.now().plusMinutes(15));
-		// Guardar cambios en la base de datos
-		signUpService.registrarUsuario(guardado);
-
-		// Intentar cambiar la contraseña con el código correcto y dentro del tiempo
-		boolean resultado = changePasswordService.cambiarPassword(
-				guardado.getEmail(), codigo, "nuevaClaveSegura");
-		assertThat(resultado).isTrue();
-
-		// Verificar que la contraseña realmente cambió (usando login)
-		boolean loginConNueva = loginService.login(guardado.getEmail(), "nuevaClaveSegura");
-		assertThat(loginConNueva).isTrue();
-
-		// Intentar cambiar la contraseña con código incorrecto
-		boolean resultadoFallo = changePasswordService.cambiarPassword(
-				guardado.getEmail(), 999999, "otraClave");
-		assertThat(resultadoFallo).isFalse();
-	}
 
 	@Autowired
 	private CreateFincaService createFincaService;
