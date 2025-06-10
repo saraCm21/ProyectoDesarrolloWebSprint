@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Crear Finca</title>
-  <link rel="stylesheet" href="/miweb/src/main/resources/static/css/registerFincaStyled.css" />
+  <link rel="stylesheet" href="/css/registerFincaStyled.css" />
 </head>
 <body>
   <div class="container">
@@ -12,20 +12,20 @@
       <h2>MENÚ</h2>
       <nav>
         <a href="/miweb/src/main/resources/templates/Home.html">🏡 Inicio</a>
-        <a href="/miweb/src/main/resources/static/html/ReportFinca.html">📄 Reporte</a>
+        <a href="/reporteFinca">📄 Reporte</a>
       </nav>
     </aside>
 
     <div class="main-content">
         <h1>Crear Finca</h1>
         <div class="form-box">
-          <form class="form" action="../../Controllers/createFincaController.php" method="POST">
+          <form class="form" th:action="@{/registerFinca}" method="POST">
             <input type="text" name="nombre" placeholder="Nombre">
-            <input type="number" name="numHectaras" placeholder="Número de Hectáreas">
+            <input type="number" name="numHectareas" placeholder="Número de Hectáreas">
             <input type="number" name="metrosCuadrados" placeholder="Metros Cuadrados">
-            <input type="text" name="codigo_propietario" placeholder="Codigo del Propietario">
-            <input type="text" name="codigo_capataz" placeholder="Codigo del Capataz">
-            <input type="text" name="codigo_vendedor" placeholder="Codigo del Vendedor">
+            <input type="text" name="codigoPropietario" placeholder="Codigo del Propietario">
+            <input type="text" name="codigoCapataz" placeholder="Codigo del Capataz">
+            <input type="text" name="codigoVendedor" placeholder="Codigo del Vendedor">
             <input type="text" name="pais" placeholder="País">
             <input type="text" name="departamento" placeholder="Departamento">
             <input type="text" name="ciudad" placeholder="Ciudad">

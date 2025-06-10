@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-MiwebApplication<miweb>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "edu.miuniversidad.miweb.MiwebApplication",
+            "projectName": "miweb",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

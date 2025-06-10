@@ -13,18 +13,18 @@ import jakarta.servlet.http.HttpServletRequest;
 public class ForgotController {
 
     @Autowired
-    private SendEmailService emailService; // Tu servicio para enviar emails
+    private SendEmailService emailService;
 
     @Autowired
-    private ChangePasswordService changePasswordService; // Tu servicio para cambiar contraseñas
+    private ChangePasswordService changePasswordService; 
 
     @PostMapping("/sendEmail")
     public String sendEmail(HttpServletRequest request) {
         String email = request.getParameter("email");
-        boolean enviado = emailService.sendEmail(email); // Implementa este método en tu servicio
+        boolean enviado = emailService.sendEmail(email); 
 
         if (enviado) {
-            return "Forgot"; // Muestra la vista Forgot.html
+            return "Forgot";
         } else {
             return "redirect:/login?error=email_failed";
         }
@@ -48,6 +48,6 @@ public class ForgotController {
 
     @GetMapping("/forgot")
     public String forgotForm() {
-        return "Forgot"; // Para mostrar la vista si se accede por GET
+        return "Forgot"; 
     }
 }
